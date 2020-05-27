@@ -355,7 +355,7 @@ def _get_mit1003(dataset_name, location=None, include_initial_fixation=False, on
 
             print('Running original code to extract fixations. This can take some minutes.')
             print('Warning: In the IPython Notebook, the output is shown on the console instead of the notebook.')
-            with open(os.path.join(temp_dir, 'extract_all_fixations.m'), 'w') as f:
+            with open('extract_all_fixations.m', 'w') as f:
                 for cmd in cmds:
                     f.write('{}\n'.format(cmd))
 
