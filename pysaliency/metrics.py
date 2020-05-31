@@ -53,7 +53,7 @@ def NSS(saliency_map, xs, ys):
 
 def CC(saliency_map_1, saliency_map_2):
     def normalize(saliency_map):
-        saliency_map -= saliency_map.mean()
+        saliency_map = saliency_map - saliency_map.mean()
         std = saliency_map.std()
 
         if std:
