@@ -1567,6 +1567,58 @@ def get_OSIE(location=None):
     return stimuli, fixations
 
 
+
+def get_webpage_saliency():
+
+    # Stimuli
+    print('Creating stimuli')
+
+    images = os.listdir('/Users/stellaris/anaconda3/envs/tmp/webpage_dataset/dataset/stimuli')
+    stimuli = create_stimuli('/Users/stellaris/anaconda3/envs/tmp/webpage_dataset/dataset/stimuli', images)
+
+    stimulus_indices = {s: images.index(s) for s in images}
+    print(stimulus_indices)
+    print('Creating fixations')
+    data = loadmat('/Users/stellaris/anaconda3/envs/tmp/webpage_dataset/dataset/fixations.mat')['fixations'].flatten()
+    #print(data)
+    xs = []
+    ys = []
+    ts = []
+    ns = []
+    train_subjects = []
+
+    for stimulus_data in data:
+        stimulus_data = stimulus_data[0, 0]
+        img_name = stimulus_data['img'][0][0][0]
+
+        n = stimulus_indices[img_name if img_name != 'flipboad_f&d.png' else 'flipboad_f_d.png']
+        for subject, subject_data in enumerate(stimulus_data['subjects'].flatten()):
+
+            fixations = subject_data[0, 0]
+            #print(type(fixations))
+            #print(fixations['fix_x'].flatten())
+
+
+            if not len(fixations['fix_x'].flatten()):
+                continue
+
+            #print(fixations['fix_time'].flatten())
+            xs.append(fixations['fix_x'].flatten()-1)
+            ys.append(fixations['fix_y'].flatten()-1)
+            ts.append(fixations['fix_time'].flatten())
+            ns.append(n)
+            train_subjects.append(subject)
+
+
+    fixations = FixationTrains.from_fixation_trains(xs, ys, ts, ns, train_subjects)
+
+    #if location:
+    #    stimuli.to_hdf5(os.path.join(location, 'stimuli.hdf5'))
+    #    fixations.to_hdf5(os.path.join(location, 'fixations.hdf5'))
+    print(fixations)
+    return stimuli, fixations
+
+
 def get_NUSEF_public(location=None):
     """
     Loads or downloads and caches the part of the NUSEF dataset,
