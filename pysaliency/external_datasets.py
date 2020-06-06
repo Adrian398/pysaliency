@@ -408,7 +408,8 @@ def _get_mit1003(dataset_name, location=None, include_initial_fixation=False, on
             scanpath_attributes = {
                 'train_durations': build_padded_2d_array(train_durations),
             }
-            fixations = FixationTrains.from_fixation_trains(xs, ys, ts, ns, train_subjects, attributes=attributes, scanpath_attributes=scanpath_attributes)
+            fixations = FixationTrains.from_fixation_trains(xs, ys, ts, ns, train_subjects, attributes=attributes,
+                                                            scanpath_attributes=scanpath_attributes)
 
         if location:
             stimuli.to_hdf5(os.path.join(location, 'stimuli.hdf5'))
@@ -633,7 +634,8 @@ def get_cat2000_test(location=None):
             categories = [category_names.index(category_name) for category_name in stimulus_category_names]
             attributes = {'category': categories}
 
-            stimuli = create_stimuli(stimuli_src_location, stimuli_filenames, stimuli_target_location, attributes=attributes)
+            stimuli = create_stimuli(stimuli_src_location, stimuli_filenames, stimuli_target_location,
+                                     attributes=attributes)
 
         if location:
             stimuli.to_hdf5(os.path.join(location, 'stimuli.hdf5'))
@@ -708,7 +710,8 @@ def _get_cat2000_train(name, location, include_initial_fixation):
             categories = [category_names.index(category_name) for category_name in stimulus_category_names]
             attributes = {'category': categories}
 
-            stimuli = create_stimuli(stimuli_src_location, stimuli_filenames, stimuli_target_location, attributes=attributes)
+            stimuli = create_stimuli(stimuli_src_location, stimuli_filenames, stimuli_target_location,
+                                     attributes=attributes)
 
             # FixationTrains
 
@@ -751,7 +754,8 @@ def _get_cat2000_train(name, location, include_initial_fixation):
                 x = []
                 y = []
                 t = []
-                for i in range(first_fixation, fix_data.shape[0]):  # Skip first fixation like Judd does via first_fixation=1
+                for i in range(first_fixation,
+                               fix_data.shape[0]):  # Skip first fixation like Judd does via first_fixation=1
                     if fix_data[i, 0] < 0 or fix_data[i, 1] < 0:
                         continue
                     if fix_data[i, 0] >= stimulus_size[1] or fix_data[i, 1] >= stimulus_size[0]:
@@ -886,7 +890,8 @@ def get_iSUN_training(location=None):
     @return: Training stimuli, training fixation trains
 
     See `get_iSUN` for more information"""
-    training_stimuli, validation_stimuli, test_stimuli, training_fixations, validation_fixations = get_iSUN(location=location)
+    training_stimuli, validation_stimuli, test_stimuli, training_fixations, validation_fixations = get_iSUN(
+        location=location)
     return training_stimuli, training_fixations
 
 
@@ -895,7 +900,8 @@ def get_iSUN_validation(location=None):
     @return: validation stimuli, validation fixation trains
 
     See `get_iSUN` for more information"""
-    training_stimuli, validation_stimuli, test_stimuli, training_fixations, validation_fixations = get_iSUN(location=location)
+    training_stimuli, validation_stimuli, test_stimuli, training_fixations, validation_fixations = get_iSUN(
+        location=location)
     return validation_stimuli, validation_fixations
 
 
@@ -904,7 +910,8 @@ def get_iSUN_testing(location=None):
     @return: testing stimuli
 
     See `get_iSUN` for more information"""
-    training_stimuli, validation_stimuli, test_stimuli, training_fixations, validation_fixations = get_iSUN(location=location)
+    training_stimuli, validation_stimuli, test_stimuli, training_fixations, validation_fixations = get_iSUN(
+        location=location)
     return test_stimuli
 
 
@@ -1056,7 +1063,8 @@ def _get_SALICON_stimuli(location, name, edition='2015', fixation_type='mouse'):
     if location:
         location = os.path.join(location, name)
         if os.path.exists(location):
-            if all(os.path.exists(os.path.join(location, filename)) for filename in ['stimuli_train.hdf5', 'stimuli_val.hdf5', 'stimuli_test.hdf5']):
+            if all(os.path.exists(os.path.join(location, filename)) for filename in
+                   ['stimuli_train.hdf5', 'stimuli_val.hdf5', 'stimuli_test.hdf5']):
                 stimuli_train = read_hdf5(os.path.join(location, 'stimuli_train.hdf5'))
                 stimuli_val = read_hdf5(os.path.join(location, 'stimuli_val.hdf5'))
                 stimuli_test = read_hdf5(os.path.join(location, 'stimuli_test.hdf5'))
@@ -1077,19 +1085,22 @@ def _get_SALICON_stimuli(location, name, edition='2015', fixation_type='mouse'):
 
             stimuli_train = create_stimuli(
                 stimuli_location=os.path.join(temp_dir, 'images', 'train'),
-                filenames=[os.path.basename(f) for f in sorted(glob.glob(os.path.join(temp_dir, 'images', 'train', 'COCO_train*')))],
+                filenames=[os.path.basename(f) for f in
+                           sorted(glob.glob(os.path.join(temp_dir, 'images', 'train', 'COCO_train*')))],
                 location=os.path.join(location, 'stimuli', 'train') if location else None
             )
 
             stimuli_val = create_stimuli(
                 stimuli_location=os.path.join(temp_dir, 'images', 'val'),
-                filenames=[os.path.basename(f) for f in sorted(glob.glob(os.path.join(temp_dir, 'images', 'val', 'COCO_val*')))],
+                filenames=[os.path.basename(f) for f in
+                           sorted(glob.glob(os.path.join(temp_dir, 'images', 'val', 'COCO_val*')))],
                 location=os.path.join(location, 'stimuli', 'val') if location else None
             )
 
             stimuli_test = create_stimuli(
                 stimuli_location=os.path.join(temp_dir, 'images', 'test'),
-                filenames=[os.path.basename(f) for f in sorted(glob.glob(os.path.join(temp_dir, 'images', 'test', 'COCO_test*')))],
+                filenames=[os.path.basename(f) for f in
+                           sorted(glob.glob(os.path.join(temp_dir, 'images', 'test', 'COCO_test*')))],
                 location=os.path.join(location, 'stimuli', 'test') if location else None
             )
 
@@ -1111,7 +1122,8 @@ def _get_SALICON_fixations(location, name, edition='2015', fixation_type='mouse'
     if location:
         location = os.path.join(location, name)
         if os.path.exists(location):
-            if all(os.path.exists(os.path.join(location, filename)) for filename in ['fixations_train.hdf5', 'fixations_val.hdf5']):
+            if all(os.path.exists(os.path.join(location, filename)) for filename in
+                   ['fixations_train.hdf5', 'fixations_val.hdf5']):
                 fixations_train = read_hdf5(os.path.join(location, 'fixations_train.hdf5'))
                 fixations_val = read_hdf5(os.path.join(location, 'fixations_val.hdf5'))
                 return fixations_train, fixations_val
@@ -1189,7 +1201,9 @@ def get_SALICON_train(edition='2015', fixation_type='mouse', location=None):
             stimuli = _load(os.path.join(location, 'SALICON', 'stimuli_train.hdf5'))
             fixations = _load(os.path.join(location, name, 'fixations_train.hdf5'))
             return stimuli, fixations
-    stimuli_train, stimuli_val, stimuli_test, fixations_train, fixations_val = get_SALICON(location=location, edition=edition, fixation_type=fixation_type)
+    stimuli_train, stimuli_val, stimuli_test, fixations_train, fixations_val = get_SALICON(location=location,
+                                                                                           edition=edition,
+                                                                                           fixation_type=fixation_type)
 
     return stimuli_train, fixations_train
 
@@ -1204,7 +1218,9 @@ def get_SALICON_val(edition='2015', fixation_type='mouse', location=None):
             stimuli = _load(os.path.join(location, 'SALICON', 'stimuli_val.hdf5'))
             fixations = _load(os.path.join(location, name, 'fixations_val.hdf5'))
             return stimuli, fixations
-    stimuli_train, stimuli_val, stimuli_test, fixations_train, fixations_val = get_SALICON(location=location, edition=edition, fixation_type=fixation_type)
+    stimuli_train, stimuli_val, stimuli_test, fixations_train, fixations_val = get_SALICON(location=location,
+                                                                                           edition=edition,
+                                                                                           fixation_type=fixation_type)
 
     return stimuli_val, stimuli_val
 
@@ -1218,7 +1234,9 @@ def get_SALICON_test(edition='2015', fixation_type='mouse', location=None):
         if os.path.exists(os.path.join(location, name)):
             stimuli = _load(os.path.join('SALICON', 'stimuli_test.hdf5'))
             return stimuli
-    stimuli_train, stimuli_val, stimuli_test, fixations_train, fixations_val = get_SALICON(location=location, edition=edition, fixation_type=fixation_type)
+    stimuli_train, stimuli_val, stimuli_test, fixations_train, fixations_val = get_SALICON(location=location,
+                                                                                           edition=edition,
+                                                                                           fixation_type=fixation_type)
 
     return stimuli_test
 
@@ -1447,7 +1465,8 @@ def get_FIGRIM(location=None):
              train_subjects_filler,
              which_times_filler,
              stimulus_types_filler,
-             responses_filler) = _load_FIGRIM_data(os.path.join(temp_dir, 'allImages_fillers.mat'), stimulus_indices, stimulus_type=0)
+             responses_filler) = _load_FIGRIM_data(os.path.join(temp_dir, 'allImages_fillers.mat'), stimulus_indices,
+                                                   stimulus_type=0)
 
             print("Targets...")
             (xs_target,
@@ -1457,7 +1476,8 @@ def get_FIGRIM(location=None):
              train_subjects_target,
              which_times_target,
              stimulus_types_target,
-             responses_target) = _load_FIGRIM_data(os.path.join(temp_dir, 'allImages_release.mat'), stimulus_indices, stimulus_type=0)
+             responses_target) = _load_FIGRIM_data(os.path.join(temp_dir, 'allImages_release.mat'), stimulus_indices,
+                                                   stimulus_type=0)
 
             print("Finalizing...")
             xs = xs_filler + xs_target
@@ -1522,9 +1542,10 @@ def get_OSIE(location=None):
                     target_name)
                 images.append(filename)
 
-            download_and_check('https://github.com/NUS-VIP/predicting-human-gaze-beyond-pixels/blob/master/data/eye/fixations.mat?raw=true',
-                               os.path.join(temp_dir, 'fixations.mat'),
-                               '8efdf6fe66f38b6e70f854c7ff45aa70')
+            download_and_check(
+                'https://github.com/NUS-VIP/predicting-human-gaze-beyond-pixels/blob/master/data/eye/fixations.mat?raw=true',
+                os.path.join(temp_dir, 'fixations.mat'),
+                '8efdf6fe66f38b6e70f854c7ff45aa70')
 
             # Stimuli
             print('Creating stimuli')
@@ -1567,9 +1588,7 @@ def get_OSIE(location=None):
     return stimuli, fixations
 
 
-
 def get_webpage_saliency():
-
     # Stimuli
     print('Creating stimuli')
 
@@ -1580,7 +1599,7 @@ def get_webpage_saliency():
     print(stimulus_indices)
     print('Creating fixations')
     data = loadmat('/Users/stellaris/anaconda3/envs/tmp/webpage_dataset/dataset/fixations.mat')['fixations'].flatten()
-    #print(data)
+    # print(data)
     xs = []
     ys = []
     ts = []
@@ -1595,27 +1614,99 @@ def get_webpage_saliency():
         for subject, subject_data in enumerate(stimulus_data['subjects'].flatten()):
 
             fixations = subject_data[0, 0]
-            #print(type(fixations))
-            #print(fixations['fix_x'].flatten())
-
+            # print(type(fixations))
+            # print(fixations['fix_x'].flatten())
 
             if not len(fixations['fix_x'].flatten()):
                 continue
 
-            #print(fixations['fix_time'].flatten())
-            xs.append(fixations['fix_x'].flatten()-1)
-            ys.append(fixations['fix_y'].flatten()-1)
+            # print(fixations['fix_time'].flatten())
+            xs.append(fixations['fix_x'].flatten() - 1)
+            ys.append(fixations['fix_y'].flatten() - 1)
             ts.append(fixations['fix_time'].flatten())
             ns.append(n)
             train_subjects.append(subject)
 
-
     fixations = FixationTrains.from_fixation_trains(xs, ys, ts, ns, train_subjects)
 
-    #if location:
+    # if location:
     #    stimuli.to_hdf5(os.path.join(location, 'stimuli.hdf5'))
     #    fixations.to_hdf5(os.path.join(location, 'fixations.hdf5'))
     print(fixations)
+    return stimuli, fixations
+
+
+def get_visual_flow():
+    # Stimuli
+    print('Creating stimuli')
+    shutil.rmtree('/Users/stellaris/anaconda3/envs/tmp/visual_flow/stimuli2')
+    data = loadmat('/Users/stellaris/anaconda3/envs/tmp/dataset.mat')['webpages']
+
+    #write to files
+    # for i in range(254):
+    #     arr = data[i, 0]['img'][0, 0]
+    #     im = Image.fromarray(arr)
+    #     if i < 10:
+    #         im.save(os.path.join('/Users/stellaris/anaconda3/envs/tmp/visual_flow/stimuli', '00' + str(i) + ".jpeg"),
+    #                 subsampling=0, quality=100)
+    #         continue;
+    #     if i < 100:
+    #         im.save(os.path.join('/Users/stellaris/anaconda3/envs/tmp/visual_flow/stimuli', '0' + str(i) + ".jpeg"),
+    #                 subsampling=0, quality=100)
+    #         continue;
+    #     else:
+    #         im.save(os.path.join('/Users/stellaris/anaconda3/envs/tmp/visual_flow/stimuli', str(i) + ".jpeg"),
+    #                 subsampling=0, quality=100)
+
+    images = os.listdir('/Users/stellaris/anaconda3/envs/tmp/visual_flow/stimuli')
+    images.sort()
+    stimuli = create_stimuli('/Users/stellaris/anaconda3/envs/tmp/visual_flow/stimuli', images,
+                             '/Users/stellaris/anaconda3/envs/tmp/visual_flow/stimuli2')
+
+    stimulus_indices = {s: images.index(s) for s in images}
+    print(stimulus_indices)
+    print('Creating fixations')
+    data = data.flatten()
+    # print(data)
+    xs = []
+    ys = []
+    ts = []
+    ns = []
+    train_subjects = []
+
+
+    #parse fixations
+
+    for idx, stimulus_data in enumerate(data):
+        #stimulus_data = stimulus_data[0, 0]
+        img_name = images[idx]
+        print(img_name)
+
+        n = stimulus_indices[img_name]
+        for subject, subject_data in enumerate(stimulus_data['eyeXYD'][0,0].flatten()):
+            #hier weiter machen
+
+            #fixations = subject_data[0, 0]
+            # print(type(fixations))
+            # print(fixations['fix_x'].flatten())
+            #if subject == 0:
+            #    print(subject_data[:,0])
+            if not len(subject_data[:,0].flatten()):
+                continue
+
+            # print(fixations['fix_time'].flatten())
+            xs.append(subject_data[:,0].flatten() - 1)
+            ys.append(subject_data[:,1].flatten() - 1)
+            ts.append(subject_data[:,2].flatten())
+            ns.append(n)
+            train_subjects.append(subject)
+
+    fixations = FixationTrains.from_fixation_trains(xs, ys, ts, ns, train_subjects)
+
+    # if location:
+    #    stimuli.to_hdf5(os.path.join(location, 'stimuli.hdf5'))
+    #    fixations.to_hdf5(os.path.join(location, 'fixations.hdf5'))
+    #print(fixations)
     return stimuli, fixations
 
 
